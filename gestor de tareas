@@ -1,0 +1,59 @@
+
+#proyecto de gestor de tareas
+#sergio arredondo ibarra
+
+print("bienvenido a tu gestor de tareas")
+
+tareas = []
+
+#menu de sistema
+while True:
+   print("-----------------------------")
+   print("menu")
+   print("elije una opcion")
+   print("1. agregar tarea")
+   print("2. ver tareas")
+   print("3. salir")
+   print("4. eliminar tarea")
+
+
+   try:
+    opcion = int(input("ingresa una opcion: "))
+   except ValueError:
+     print("debes ingresar un numero")
+     continue
+
+   print("-----------------------------")
+
+ 
+   if opcion == 1:
+    tarea = input("ingresa la tarea que deseas agregar: ")
+
+    if tarea == "":
+        print("la tarea no puede estar vacia")
+    else:
+        tareas.append(tarea)
+        print("tarea agregada con exito")
+   elif opcion == 2:
+    if len(tareas) == 0:
+        print("no hay tareas registradas")
+    else:
+        print(f"tienes {len(tareas)} tareas registradas")
+
+        for numero, tarea in enumerate(tareas, start=1):
+            print(f"{numero}. {tarea}")
+   elif opcion == 3:
+        print("adios")
+        print("gracias por usar el gestor de tareas")
+        break
+   elif opcion == 4:
+        tarea = input("ingresa la tarea que deseas eliminar: ")
+
+        if tarea in tareas:
+           tareas.remove(tarea)
+           print("tarea eliminada con exito")
+           print(f"ahora tienes {len(tareas)} tareas registradas")
+        else:
+           print("esa tarea no existe")
+
+
