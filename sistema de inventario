@@ -1,0 +1,169 @@
+# sistema de inventario
+# sergio arredondo ibarra
+
+productos = []
+
+# funciones
+
+def agregar_producto():
+    nombre = input("Ingrese el nombre del producto: ")
+    precio = float(input("Ingrese el precio del producto: "))
+    cantidad = int(input("Ingrese la cantidad del producto: "))
+
+    productos.append({
+        "nombre": nombre,
+        "precio": precio,
+        "cantidad": cantidad
+    })
+
+    print("Producto agregado exitosamente.")
+
+
+def buscar_producto():
+    nombre = input("Ingrese el nombre del producto a buscar: ")
+
+    for producto in productos:
+        if producto["nombre"] == nombre:
+            print("\nProducto encontrado:")
+            print("Nombre:", producto["nombre"])
+            print("Precio:", producto["precio"])
+            print("Cantidad:", producto["cantidad"])
+            return
+
+    print("Producto no encontrado.")
+
+
+def actualizar_producto():
+    nombre = input("Ingrese el nombre del producto a actualizar: ")
+
+    for producto in productos:
+        if producto["nombre"] == nombre:
+            precio = float(input("Ingrese el nuevo precio del producto: "))
+            cantidad = int(input("Ingrese la nueva cantidad del producto: "))
+
+            producto["precio"] = precio
+            producto["cantidad"] = cantidad
+
+            print("Producto actualizado exitosamente.")
+            return
+
+    print("Producto no encontrado.")
+
+
+def eliminar_producto():
+    nombre = input("Ingrese el nombre del producto a eliminar: ")
+
+    for producto in productos:
+        if producto["nombre"] == nombre:
+            productos.remove(producto)
+            print("Producto eliminado exitosamente.")
+            return
+
+    print("Producto no encontrado.")
+
+
+def listar_productos():
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    print("\nLista de productos:")
+
+    for producto in productos:
+        print("---------------------")
+        print("Nombre:", producto["nombre"])
+        print("Precio:", producto["precio"])
+        print("Cantidad:", producto["cantidad"])
+
+
+def guardar_en_txt():
+    nombre_archivo = input("Ingrese el nombre del archivo: ")
+
+    with open(nombre_archivo, "w") as archivo:
+        for producto in productos:
+            archivo.write(
+                f"{producto['nombre']},{producto['precio']},{producto['cantidad']}\n"
+            )
+
+    print("Productos guardados exitosamente.")
+
+
+def cargar_desde_txt():
+    nombre_archivo = input("Ingrese el nombre del archivo: ")
+
+    try:
+        with open(nombre_archivo, "r") as archivo:
+            lineas = archivo.readlines()
+
+        productos.clear()
+
+        for linea in lineas:
+            datos = linea.strip().split(",")
+
+            productos.append({
+                "nombre": datos[0],
+                "precio": float(datos[1]),
+                "cantidad": int(datos[2])
+            })
+
+        print("Productos cargados exitosamente.")
+
+    except FileNotFoundError:
+        print("El archivo no existe.")
+
+
+def valor_total_inventario():
+    total = 0
+
+    for producto in productos:
+        total += producto["precio"] * producto["cantidad"]
+
+    print(f"Valor total del inventario: ${total}")
+
+
+# menú principal
+
+while True:
+    print("\n===== SISTEMA DE INVENTARIO =====")
+    print("1. Agregar producto")
+    print("2. Buscar producto")
+    print("3. Actualizar producto")
+    print("4. Eliminar producto")
+    print("5. Listar productos")
+    print("6. Guardar en TXT")
+    print("7. Cargar desde TXT")
+    print("8. Valor total del inventario")
+    print("9. Salir")
+
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        agregar_producto()
+
+    elif opcion == "2":
+        buscar_producto()
+
+    elif opcion == "3":
+        actualizar_producto()
+
+    elif opcion == "4":
+        eliminar_producto()
+
+    elif opcion == "5":
+        listar_productos()
+
+    elif opcion == "6":
+        guardar_en_txt()
+
+    elif opcion == "7":
+        cargar_desde_txt()
+
+    elif opcion == "8":
+        valor_total_inventario()
+
+    elif opcion == "9":
+        print("Saliendo del programa...")
+        break
+
+    else:
+        print("Opción inválida.")
