@@ -1,0 +1,87 @@
+#lista de contactos
+#sergio arredondo ibarra
+
+contactos = []
+
+#menu del sistema
+while True:
+    print("1. Agregar contacto")
+    print("2. Mostrar contactos")
+    print("3. buscar contacto")
+    print("4. eliminar contacto")
+    print("5. editar contacto")
+    print("6. contar contactos")
+    print("7. salir")
+    print("8. guardar contactos en txt")
+    opcion = input("Ingrese una opcion: ")
+
+    if opcion == "1":
+        nombre = input("Ingrese el nombre del contacto: ")
+        telefono = input("Ingrese el telefono del contacto: ")
+        contactos.append({"nombre": nombre, "telefono": telefono})
+        print("Contacto agregado con exito")
+        existe = False
+        for contacto in contactos:
+            if contacto["nombre"] == nombre:
+                print(f"{contacto['nombre']} - {contacto['telefono']}")
+                existe = True
+                break
+        if not existe:
+            print("Contacto no encontrado")
+    elif opcion == "2":
+        if len(contactos) == 0:
+            print("No hay contactos registrados")
+        else:
+            print("Lista de contactos:")
+            for contacto in contactos:
+                print(f"{contacto['nombre']} - {contacto['telefono']}")
+    elif opcion == "3":
+        nombre = input("Ingrese el nombre del contacto a buscar: ")
+        encontrado = False
+        for contacto in contactos:
+            if contacto["nombre"] == nombre:
+                print(f"{contacto['nombre']} - {contacto['telefono']}")
+                encontrado = True
+                break
+        if not encontrado:
+            print("Contacto no encontrado")
+    elif opcion == "4":
+        nombre = input("Ingrese el nombre del contacto a eliminar: ")
+        for contacto in contactos:
+            if contacto["nombre"] == nombre:
+                contactos.remove(contacto)
+                print("Contacto eliminado con exito")
+                break
+        if not encontrado:
+            print("Contacto no encontrado")
+    elif opcion == "5":
+              nombre = input("ingrese el nombre del contacto a editar: ")
+              encontrado = False
+
+              for contacto in contactos:
+                  if contacto["nombre"] == nombre:
+                      telefono = input("Ingrese el nuevo telefono del contacto: ")
+                      contacto["telefono"] = telefono
+                      print("Contacto editado con exito")
+                      encontrado = True
+                      break
+                  if not encontrado:
+                      print("Contacto no encontrado")
+    elif opcion == "6":
+        print(f"total de contactos: {len(contactos)}")
+        print("Lista de contactos:")
+        for contacto in contactos:
+            print(f"{contacto['nombre']} - {contacto['telefono']}")
+    elif opcion == "7":
+        print("Saliendo del programa")
+        break
+    elif opcion == "8":
+     archivo = open("contactos.txt", "w")
+
+     for contacto in contactos:
+        archivo.write(f"{contacto['nombre']} - {contacto['telefono']}\n")
+
+     archivo.close()
+     print("Contactos guardados en el archivo contactos.txt")
+    else:
+        print("Opcion no valida")
