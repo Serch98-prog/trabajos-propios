@@ -1,0 +1,175 @@
+#sistema de ventas
+#sergio arredondo ibarra
+productos = []
+ventas = []
+ganancia = 0
+
+def registrar_producto():
+    nombre = input("Ingrese el nombre del producto: ")
+    precio = float(input("Ingrese el precio del producto: "))
+    cantidad = int(input("Ingrese la cantidad del producto: "))
+    productos.append({"nombre": nombre, "precio": precio, "cantidad": cantidad})
+    print("Producto registrado exitosamente.")
+
+def mostrar_productos():
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    print("Lista de productos:")
+    for i, producto in enumerate(productos, start=1):
+        print(f"{i}. Nombre: {producto['nombre']}, Precio: {producto['precio']}, Cantidad: {producto['cantidad']}")
+
+def realizar_venta():
+    global ganancia
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    mostrar_productos()
+    print("Seleccione el producto que desea comprar:")
+    producto_seleccionado = int(input("Ingrese el número del producto que desea comprar: "))
+    if 1 <= producto_seleccionado <= len(productos):
+            producto = productos[producto_seleccionado - 1]
+            cantidad_comprada = int(input("Ingrese la cantidad que desea comprar: "))
+            if cantidad_comprada <= producto["cantidad"]:
+                precio_total = producto["precio"] * cantidad_comprada
+                ganancia += precio_total
+                producto["cantidad"] -= cantidad_comprada
+                print(f"Venta realizada. Total a pagar: {precio_total}")
+                print(f"Stock restante: {producto['cantidad']}")
+                ventas.append({"nombre": producto["nombre"], "precio": producto["precio"], "cantidad": cantidad_comprada})
+            else:
+                print("No hay suficiente cantidad en stock.")
+    else:
+            print("Número de producto inválido.")
+
+def mostrar_ganancia():
+    print(f"La ganancia total es: ${ganancia}")
+
+def guardar_productos():
+    nombre_archivo = "productos.txt"
+    with open(nombre_archivo, "w") as archivo:
+        for producto in productos:
+            linea = f"{producto['nombre']},{producto['precio']},{producto['cantidad']}\n"
+            archivo.write(linea)
+    print(f"Productos guardados en el archivo {nombre_archivo}")
+
+def cargar_productos():
+    nombre_archivo = "productos.txt"
+
+    try:
+        with open(nombre_archivo, "r") as archivo:
+            lineas = archivo.readlines()
+
+            productos.clear()
+            for linea in lineas:
+                datos = linea.strip().split(",")
+                nombre = datos[0]
+                precio = float(datos[1])
+                cantidad = int(datos[2])
+
+                productos.append({
+                    "nombre": nombre,
+                    "precio": precio,
+                    "cantidad": cantidad
+                })
+
+        print(f"Productos cargados desde el archivo {nombre_archivo}")
+
+    except FileNotFoundError:
+        print(f"El archivo {nombre_archivo} no fue encontrado.")
+
+def guardar_historial_ventas():
+    nombre_archivo = "historial_ventas.txt"
+
+    with open(nombre_archivo, "w") as archivo:
+        for venta in ventas:
+            linea = f"{venta['nombre']},{venta['precio']},{venta['cantidad']}\n"
+            archivo.write(linea)
+    print(f"Historial de ventas guardado en el archivo {nombre_archivo}")
+
+def cargar_historial_ventas():
+    nombre_archivo = "historial_ventas.txt"
+    try:
+        with open(nombre_archivo, "r") as archivo:
+            lineas = archivo.readlines()
+            ventas.clear()
+            for linea in lineas:
+                datos = linea.strip().split(",")
+                nombre = datos[0]
+                precio = float(datos[1])
+                cantidad = int(datos[2])
+                ventas.append({
+                    "nombre": nombre,
+                    "precio": precio,
+                    "cantidad": cantidad
+                })
+
+        print(f"Historial de ventas cargado desde el archivo {nombre_archivo}")
+    except FileNotFoundError:
+        print(f"El archivo {nombre_archivo} no fue encontrado.")
+
+#cargar productos
+cargar_productos()
+cargar_historial_ventas()
+
+def mostrar_producto_mas_stock():
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    producto_mas_stock = max(productos, key=lambda x: x["cantidad"])
+    print(f"El producto con más stock es: {producto_mas_stock['nombre']} con {producto_mas_stock['cantidad']} unidades en stock.")
+
+def mostrar_producto_menos_stock():
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    producto_menos_stock = min(productos, key=lambda x: x["cantidad"])
+    print(f"El producto con menos stock es: {producto_menos_stock['nombre']} con {producto_menos_stock['cantidad']} unidades en stock.")
+
+#menu
+while True:
+
+    print("\nMenú:")
+    print("1. Registrar producto")
+    print("2. Mostrar productos")
+    print("3. Realizar venta")
+    print("4. Mostrar ganancia")
+    print("5. guardar productos")
+    print("6. cargar productos")
+    print("7. guardar historial de ventas")
+    print("8. cargar historial de ventas")
+    print("9. mostrar producto con mas stock")
+    print("10. mostrar producto con menos stock")
+    print("11. salir")
+
+    opcion = input("Seleccione una opción: ")
+    if opcion == "1":
+        registrar_producto()
+    elif opcion == "2":
+        mostrar_productos()
+    elif opcion == "3":
+        realizar_venta()
+    elif opcion == "4":
+        mostrar_ganancia()
+    elif opcion == "5":
+        guardar_productos()
+    elif opcion == "6":
+        cargar_productos()
+    elif opcion == "7":
+        guardar_historial_ventas()
+    elif opcion == "8":
+        cargar_historial_ventas()
+    elif opcion == "9":
+        mostrar_producto_mas_stock()
+    elif opcion == "10":
+        mostrar_producto_menos_stock()
+    elif opcion == "11":
+        break
+
+
+    else:
+        print("Opción inválida")
